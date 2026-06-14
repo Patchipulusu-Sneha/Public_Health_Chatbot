@@ -11,6 +11,8 @@ function Layout({
   onCreateNewChat,
   onDeleteChat
 }) {
+
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const staticNavItems = [
@@ -38,7 +40,7 @@ function Layout({
         lg:relative lg:transform-none lg:translate-x-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        <div className="flex flex-col h-[calc(100vh-4.5rem)] overflow-hidden">
+        <div className="flex flex-col h-[calc(100vh-5rem)] overflow-hidden">
           
           {/* Sidebar Header */}
           <div className="h-20 flex items-center justify-between px-6 border-b border-[#f0f9ff] shrink-0">
@@ -141,9 +143,12 @@ function Layout({
           </div>
         </div>
 
-        {/* Sidebar User Footer - Upgraded text sizes */}
-        <div className="p-4 border-t border-[#f0f9ff] bg-[#f0f9ff]/50 h-20 shrink-0 flex items-center">
-          <div className="flex items-center gap-3 px-2 w-full">
+        {/* Sidebar User Footer - Interactive Trigger for Login Details */}
+        <div className="p-4 border-t border-[#bae6fd] bg-[#f0f9ff]/50 h-20 shrink-0 flex items-center">
+          <button 
+            onClick={() => setIsLoginOpen(true)}
+            className="flex items-center gap-3 px-2 w-full text-left rounded-xl p-1.5 hover:bg-[#bae6fd]/30 transition duration-150 cursor-pointer"
+          >
             <div className="w-10 h-10 rounded-full bg-[rgb(65,65,227)] text-white flex items-center justify-center font-black text-base shadow-sm shrink-0">
               U
             </div>
@@ -151,7 +156,7 @@ function Layout({
               <p className="text-sm font-black text-[#1e3a8a] truncate">Public Session</p>
               <p className="text-xs text-[#0284c7] font-bold truncate">Frontend Active</p>
             </div>
-          </div>
+          </button>
         </div>
       </aside>
 
@@ -181,6 +186,61 @@ function Layout({
         </main>
 
       </div>
+
+      {/* Login Modal Overlay */}
+      {isLoginOpen && (
+        <div className="fixed inset-0 bg-[#1e3a8a]/40 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+          <div className="bg-white border-2 border-[#bae6fd] rounded-2xl shadow-2xl max-w-md w-full p-6">
+            
+            {/* Header */}
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 rounded-full bg-[#f0f9ff] text-[rgb(65,65,227)] flex items-center justify-center text-2xl mx-auto mb-2 font-black border border-[#bae6fd]">
+                🔐
+              </div>
+              <h3 className="text-2xl font-black text-[#1e3a8a]">Secure Portal Access</h3>
+              <p className="text-sm text-[#0284c7] font-bold mt-1">Enter your clinical practitioner credentials</p>
+            </div>
+
+            {/* Form Fields */}
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+              <div>
+                <label className="block text-[#0369a1] text-sm font-black mb-1">Email Address</label>
+                <input 
+                  type="email" 
+                  placeholder="sneha.p@carepulse.ai" 
+                  className="w-full p-3 text-base rounded-xl border border-[#bae6fd] bg-[#f0f9ff]/30 focus:outline-none focus:border-[rgb(65,65,227)] font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#0369a1] text-sm font-black mb-1">Security Password</label>
+                <input 
+                  type="password" 
+                  placeholder="••••••••" 
+                  className="w-full p-3 text-base rounded-xl border border-[#bae6fd] bg-[#f0f9ff]/30 focus:outline-none focus:border-[rgb(65,65,227)] font-mono"
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-2">
+                <button 
+                  type="button"
+                  onClick={() => setIsLoginOpen(false)}
+                  className="flex-1 p-3 bg-[#f0f9ff] text-[#1e3a8a] font-extrabold rounded-xl border border-[#bae6fd] hover:bg-[#bae6fd]/30 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit"
+                  className="flex-1 p-3 bg-[rgb(65,65,227)] text-white font-extrabold rounded-xl hover:bg-[rgb(50,50,200)] shadow-md transition-colors cursor-pointer"
+                >
+                  Verify Portal
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
